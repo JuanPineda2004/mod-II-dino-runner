@@ -6,7 +6,7 @@ class DINOSAUR(Sprite):
     X_POS=120
     Y_POS=310
     JUMP_VELOCITY=10
-    Y_POS_LIMIT = 200
+    Y_POS_LIMIT = 125
     def __init__(self):
         self.image=RUNNING[0]
         self.dino_rect = self.image.get_rect()
