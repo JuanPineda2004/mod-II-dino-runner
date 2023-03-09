@@ -1,3 +1,5 @@
+from dino_runner.utils.constants import CLOUD
+from dino_runner.components.cloud import clouds
 from dino_runner.utils.text_utils import get_centered_message
 from dino_runner.utils.text_utils import get_score_element
 from dino_runner.components.obstacles.obstacle_manager import Obstaclemanager
@@ -21,7 +23,9 @@ class Game:
         self.y_pos_bg = 380
         self.player = DINOSAUR()
         self.obstacle_manager = Obstaclemanager()
+        
         self.points = 0
+        
 
     def show_score(self):
         self.points += 1
@@ -33,6 +37,7 @@ class Game:
         self.screen.blit(score, score_rect)
 
     def show_menu(self):
+        
         self.screen.fill((255, 255, 255))
         text, text_rect = get_centered_message('Press any key to start!')
         self.screen.blit(text, text_rect)
@@ -42,6 +47,8 @@ class Game:
         for event in events:
             if event.type == pygame.QUIT:
                 print('Game Over')
+                self.death_count +=1
+                print()
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
                 self.run()    
@@ -75,10 +82,21 @@ class Game:
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
+        
         self.obstacle_manager.draw(self.screen)
         self.show_score()
+        self.clouds_1()
         pygame.display.update()
         pygame.display.flip()
+
+    def clouds_1(self):
+        image_width = CLOUD.get_width()
+        self.screen.blit(CLOUD, (image_width + self.x_pos_bg +1020, self.y_pos_bg -250))
+        self.screen.blit(CLOUD, (image_width + self.x_pos_bg +1070, self.y_pos_bg -250))
+        self.screen.blit(CLOUD, (image_width + self.x_pos_bg +2030, self.y_pos_bg -300))
+        self.screen.blit(CLOUD, (image_width + self.x_pos_bg +900, self.y_pos_bg -120))
+        self.screen.blit(CLOUD, (image_width + self.x_pos_bg +3000, self.y_pos_bg -189))
+            
 
     def draw_background(self):
         image_width = BG.get_width()

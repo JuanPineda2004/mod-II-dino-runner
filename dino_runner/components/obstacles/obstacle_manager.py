@@ -19,9 +19,9 @@ class Obstaclemanager:
             0: SmallCactus(SMALL_CACTUS[0]),
             1: SmallCactus(SMALL_CACTUS[1]),
             2: SmallCactus(SMALL_CACTUS[2]),
-            3: LargeCactus(SMALL_CACTUS[0]),
-            4: LargeCactus(SMALL_CACTUS[1]),
-            5: LargeCactus(SMALL_CACTUS[2]),
+            3: LargeCactus(LARGE_CACTUS[0]),
+            4: LargeCactus(LARGE_CACTUS[1]),
+            5: LargeCactus(LARGE_CACTUS[2]),
             6: Bird(BIRD[0])
         }
         return obstacles_types[random.randint(0, 6)]    
@@ -36,6 +36,7 @@ class Obstaclemanager:
 
             if game.player.dino_rect.colliderect(obstacle.rect):
                 pygame.time.delay(500)
+                
                 game.playing = False
                 break
 
