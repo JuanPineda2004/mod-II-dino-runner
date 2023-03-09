@@ -101,6 +101,8 @@ class DINOSAUR(Sprite):
             self.power_up_time=self.POWER_UP_TIME
 
         
+            
+        
                
 
         

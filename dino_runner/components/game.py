@@ -1,6 +1,6 @@
 from dino_runner.utils.text_utils import get_score_max
 from dino_runner.utils.constants import LARGE_CACTUS
-from dino_runner.utils.constants import BIRD
+from dino_runner.utils.constants import BIRD,DEAD,JUMPING_HAMMER
 from dino_runner.utils.constants import VI
 from dino_runner.utils.constants import RE
 from dino_runner.utils.constants import GO
@@ -33,7 +33,7 @@ class Game:
         self.power_up_manager = PowerUpManager()
         self.death_count = 0
         self.points = 0
-        heart_count =0
+        self.high_score =self.points
         
 
     def show_score(self):
@@ -44,6 +44,13 @@ class Game:
 
         score, score_rect = get_score_element(self.points)
         self.screen.blit(score, score_rect)
+
+    def show_max(self):
+        
+        score, score_rect = get_score_max(self.high_score)
+        self.screen.blit(score, score_rect)    
+
+    
 
       
 
@@ -78,7 +85,10 @@ class Game:
             
         else:
             self.screen.fill((255, 255, 255))
+            
             self.screen.blit(GO, (half_screen_width -195, half_screen_height-140))
+            self.screen.blit(DEAD, (half_screen_width -300, half_screen_height-100))
+            self.screen.blit(JUMPING_HAMMER, (half_screen_width +200, half_screen_height-100))
             self.screen.blit(RE, (half_screen_width -50, half_screen_height-100))
             text, text_rect = get_centered_message('press any key to retry!')
             self.screen.blit(text, text_rect)
@@ -109,7 +119,7 @@ class Game:
         self.death_count +=1    
         self.playing=False
         self.points=0
-        self.HS=self.points
+        self.high_score+=self.points
         self.game_speed = self.INITIAL_SPEED
         self.obstacle_manager.remove_obstacles()
         
@@ -134,6 +144,8 @@ class Game:
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
         self.show_score()
+        self.show_max()
+        
         self.clouds_1()
         pygame.display.update()
         pygame.display.flip()

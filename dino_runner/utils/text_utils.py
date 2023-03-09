@@ -13,9 +13,9 @@ def get_score_element(points):
 
 def get_score_max(points):
     font = pygame.font.Font(FONT_STYLE, 20)
-    text = font.render(f"max score: {points}", True, BLACK_COLOR )
+    text = font.render(f"High score: {points}", True, BLACK_COLOR )
     text_rect = text.get_rect()
-    text_rect.center=(1000,45)
+    text_rect.center=(1000,80)
     return text, text_rect
 
 def get_centered_message(message, x_offset = 0, y_offset = 0, font_size = 30):

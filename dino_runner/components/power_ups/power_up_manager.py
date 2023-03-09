@@ -41,8 +41,7 @@ class PowerUpManager:
         for power_up in self.power_ups:
             power_up.update(game.game_speed, self.power_ups)
             if game.player.dino_rect.colliderect(power_up.rect):
-                game.player.activate_power_up(power_up.type)
-                  
+                game.player.activate_power_up(power_up.type)      
     def draw(self, screen):
         for power_up in self.power_ups:
             power_up.draw(screen)

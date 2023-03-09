@@ -43,7 +43,8 @@ class Obstaclemanager:
                 if game.player.dino_rect.colliderect(obstacle.rect):
                     obstacle.rect = pygame.Rect(0, 0, 0, 0)
             elif game.player.type == HEART_TYPE:
-                print("activate her")     
+                print("activate her")
+                    
 
             elif game.player.dino_rect.colliderect(obstacle.rect):
                 game.player.dead()
