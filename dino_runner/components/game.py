@@ -1,3 +1,10 @@
+from dino_runner.utils.text_utils import get_score_max
+from dino_runner.utils.constants import LARGE_CACTUS
+from dino_runner.utils.constants import BIRD
+from dino_runner.utils.constants import VI
+from dino_runner.utils.constants import RE
+from dino_runner.utils.constants import GO
+from dino_runner.components.power_ups.power_up_manager import PowerUpManager
 from dino_runner.utils.constants import CLOUD
 from dino_runner.components.cloud import clouds
 from dino_runner.utils.text_utils import get_centered_message
@@ -23,8 +30,10 @@ class Game:
         self.y_pos_bg = 380
         self.player = DINOSAUR()
         self.obstacle_manager = Obstaclemanager()
-        
+        self.power_up_manager = PowerUpManager()
+        self.death_count = 0
         self.points = 0
+        heart_count =0
         
 
     def show_score(self):
@@ -36,11 +45,45 @@ class Game:
         score, score_rect = get_score_element(self.points)
         self.screen.blit(score, score_rect)
 
+      
+
     def show_menu(self):
+        half_screen_width = SCREEN_WIDTH //2
+        half_screen_height = SCREEN_HEIGHT //2
         
-        self.screen.fill((255, 255, 255))
-        text, text_rect = get_centered_message('Press any key to start!')
-        self.screen.blit(text, text_rect)
+        if self.death_count==0:
+            self.screen.fill((255, 255, 255))
+            text, text_rect = get_centered_message('WELCOME TO DINO GAME!!!')
+            self.screen.blit(text, text_rect)
+            text, text_rect = get_centered_message(f"press any key to continue", y_offset=60, font_size=25 )
+            self.screen.blit(text, text_rect)
+            self.screen.blit(ICON, (half_screen_width -50, half_screen_height-200))
+            self.screen.blit(CLOUD, (half_screen_width +100, half_screen_height-200))
+            self.screen.blit(CLOUD, (half_screen_width -100, half_screen_height-200))
+            self.screen.blit(CLOUD, (half_screen_width -300, half_screen_height-100))
+            self.screen.blit(CLOUD, (half_screen_width +150, half_screen_height-250))
+            self.screen.blit(CLOUD, (half_screen_width +50, half_screen_height-180))
+            self.screen.blit(BIRD[0], (half_screen_width+50 , half_screen_height-100))
+            self.screen.blit(BIRD[0], (half_screen_width-170 , half_screen_height-100))
+            self.screen.blit(BIRD[1], (half_screen_width-50 , half_screen_height-100))
+            self.screen.blit(LARGE_CACTUS[2], (half_screen_width-300 , half_screen_height+0))
+            self.screen.blit(LARGE_CACTUS[2], (half_screen_width+200 , half_screen_height+0))
+            image_width = BG.get_width()
+            self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
+            self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
+            if self.x_pos_bg <= -image_width:
+                self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
+                self.x_pos_bg = 0
+            self.x_pos_bg -= self.game_speed
+            
+        else:
+            self.screen.fill((255, 255, 255))
+            self.screen.blit(GO, (half_screen_width -195, half_screen_height-140))
+            self.screen.blit(RE, (half_screen_width -50, half_screen_height-100))
+            text, text_rect = get_centered_message('press any key to retry!')
+            self.screen.blit(text, text_rect)
+            text, text_rect = get_centered_message(f"ATTEMPS: {self.death_count}", y_offset=40, font_size=20 )
+            self.screen.blit(text, text_rect)
         pygame.display.update()
 
         events = pygame.event.get()
@@ -62,10 +105,14 @@ class Game:
             self.events()
             self.update()
             self.draw()
+        pygame.time.delay(1000)
+        self.death_count +=1    
         self.playing=False
         self.points=0
+        self.HS=self.points
         self.game_speed = self.INITIAL_SPEED
         self.obstacle_manager.remove_obstacles()
+        
 
     def events(self):
         for event in pygame.event.get():
@@ -76,6 +123,7 @@ class Game:
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
         self.obstacle_manager.update(self)
+        self.power_up_manager.update(self)
 
     def draw(self):
         self.clock.tick(FPS)
@@ -84,6 +132,7 @@ class Game:
         self.player.draw(self.screen)
         
         self.obstacle_manager.draw(self.screen)
+        self.power_up_manager.draw(self.screen)
         self.show_score()
         self.clouds_1()
         pygame.display.update()

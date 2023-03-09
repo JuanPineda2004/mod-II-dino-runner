@@ -1,6 +1,8 @@
 
 import random
 
+from dino_runner.utils.constants import SHIELD_TYPE, HAMMER_TYPE
+
 from dino_runner.components.obstacles.bird import Bird
 
 from dino_runner.components.obstacles.large_cactus import LargeCactus
@@ -33,9 +35,14 @@ class Obstaclemanager:
 
         for obstacle in self.obstacles:
             obstacle.update(game.game_speed, self.obstacles)
+            if game.player.type == SHIELD_TYPE:
+                print("shield activated, no damage received")
 
-            if game.player.dino_rect.colliderect(obstacle.rect):
-                pygame.time.delay(500)
+            elif  game.player.type == HAMMER_TYPE:  
+                print("hammer activate") 
+
+            elif game.player.dino_rect.colliderect(obstacle.rect):
+                game.player.dead()
                 
                 game.playing = False
                 break

@@ -1,5 +1,10 @@
+
+from dino_runner.utils.constants import HAMMER_TYPE
+from dino_runner.utils.constants import SHIELD_TYPE
+from dino_runner.utils.constants import DEFAULT_TYPE
 import pygame
-from dino_runner.utils.constants import RUNNING, DUCKING, JUMPING
+from dino_runner.utils.constants import RUNNING, DUCKING, JUMPING, DEAD, RUNNING_SHIELD,RUNNING_HAMMER,JUMPING_HAMMER,JUMPING_SHIELD,DUCKING_HAMMER,DUCKING_SHIELD
+
 from pygame.sprite import Sprite
 
 class DINOSAUR(Sprite):
@@ -7,6 +12,10 @@ class DINOSAUR(Sprite):
     Y_POS=310
     JUMP_VELOCITY=10
     Y_POS_LIMIT = 125
+    POWER_UP_TIME = 200 
+                                 
+
+
     def __init__(self):
         self.image=RUNNING[0]
         self.dino_rect = self.image.get_rect()
@@ -17,6 +26,12 @@ class DINOSAUR(Sprite):
         self.dino_run=True
         self.dino_duck=False
         self.dino_jump = False
+        self.type = DEFAULT_TYPE
+        self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER }
+        self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD, HAMMER_TYPE: JUMPING_HAMMER }
+        self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, HAMMER_TYPE: DUCKING_HAMMER }
+        self.power_up_time = 0
+
     def process_event(self, user_input):
         if user_input[pygame.K_DOWN]:
             self.dino_run=False
@@ -36,8 +51,11 @@ class DINOSAUR(Sprite):
         elif self.dino_jump:
             self.jump()    
         else:
-            self.run()    
-        
+            self.run()  
+
+        self.power_up_time -=1
+        if self.power_up_time < 0:
+            self.type=DEFAULT_TYPE
         self.step_index = self.step_index + 1
         if self.step_index == 10:
             self.step_index = 0
@@ -46,13 +64,14 @@ class DINOSAUR(Sprite):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
 
     def run(self):
-        self.image=RUNNING[0] if self.step_index <6 else RUNNING[1]
+        
+        self.image=self.run_img[self.type][0] if self.step_index <6 else self.run_img[self.type][1]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x=self.X_POS
         self.dino_rect.y=self.Y_POS     
 
     def duck(self):
-        self.image=DUCKING[0] if self.step_index <6 else DUCKING[1] 
+        self.image=self.duck_img[self.type][0] if self.step_index <6 else self.duck_img[self.type][1] 
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x=self.X_POS
         self.dino_rect.y=self.Y_POS+35
@@ -60,7 +79,7 @@ class DINOSAUR(Sprite):
 
     def jump(self):
         
-        self.image = JUMPING
+        self.image = self.jump_img[self.type]
         self.dino_rect.x=self.X_POS
         self.dino_rect.y -= self.jump_vel 
         if self.dino_rect.y <= self.Y_POS_LIMIT:
@@ -68,9 +87,14 @@ class DINOSAUR(Sprite):
         if self.dino_rect.y > self.Y_POS:
             self.jump_vel *= -1
             self.dino_rect.y = self.Y_POS
-            self.dino_jump = False    
-        
-       
+            self.dino_jump = False  
+
+    def dead(self):
+        self.image = DEAD    
+    def activate_power_up(self, power_up_type):
+        if power_up_type == SHIELD_TYPE:
+            self.type=SHIELD_TYPE
+            self.power_up_time=self.POWER_UP_TIME   
         
         
         

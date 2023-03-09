@@ -70,3 +70,10 @@ BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
 DEFAULT_TYPE = "default"
+DEAD = pygame.image.load(os.path.join(IMG_DIR, 'Dino/DinoDead.png'))
+SHIELD_TYPE = "shield"
+HAMMER_TYPE = "hammer"
+HEART_TYPE = "heart"
+GO=pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png'))
+RE=pygame.image.load(os.path.join(IMG_DIR, 'Other/Reset.png'))
+VI=pygame.image.load(os.path.join(IMG_DIR, 'Other/Chrome Dino.gif'))
