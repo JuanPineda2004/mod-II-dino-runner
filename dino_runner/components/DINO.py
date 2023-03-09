@@ -1,6 +1,6 @@
 
 from dino_runner.utils.constants import HAMMER_TYPE
-from dino_runner.utils.constants import SHIELD_TYPE
+from dino_runner.utils.constants import SHIELD_TYPE, HEART_TYPE
 from dino_runner.utils.constants import DEFAULT_TYPE
 import pygame
 from dino_runner.utils.constants import RUNNING, DUCKING, JUMPING, DEAD, RUNNING_SHIELD,RUNNING_HAMMER,JUMPING_HAMMER,JUMPING_SHIELD,DUCKING_HAMMER,DUCKING_SHIELD
@@ -94,7 +94,15 @@ class DINOSAUR(Sprite):
     def activate_power_up(self, power_up_type):
         if power_up_type == SHIELD_TYPE:
             self.type=SHIELD_TYPE
-            self.power_up_time=self.POWER_UP_TIME   
+            self.power_up_time=self.POWER_UP_TIME
+
+        elif power_up_type == HAMMER_TYPE:
+            self.type=HAMMER_TYPE
+            self.power_up_time=self.POWER_UP_TIME
+
+        
+               
+
         
         
         

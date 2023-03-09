@@ -42,8 +42,7 @@ class PowerUpManager:
             power_up.update(game.game_speed, self.power_ups)
             if game.player.dino_rect.colliderect(power_up.rect):
                 game.player.activate_power_up(power_up.type)
-            elif game.player.dino_rect.colliderect(power_up.rect):
-                self.screen.blit(HEART, (half_screen_width +50, half_screen_height-180))  
+                  
     def draw(self, screen):
         for power_up in self.power_ups:
             power_up.draw(screen)

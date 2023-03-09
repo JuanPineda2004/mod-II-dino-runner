@@ -1,7 +1,7 @@
 
 import random
 
-from dino_runner.utils.constants import SHIELD_TYPE, HAMMER_TYPE
+from dino_runner.utils.constants import SHIELD_TYPE, HAMMER_TYPE, HEART_TYPE
 
 from dino_runner.components.obstacles.bird import Bird
 
@@ -39,7 +39,11 @@ class Obstaclemanager:
                 print("shield activated, no damage received")
 
             elif  game.player.type == HAMMER_TYPE:  
-                print("hammer activate") 
+                print("hammer activate")
+                if game.player.dino_rect.colliderect(obstacle.rect):
+                    obstacle.rect = pygame.Rect(0, 0, 0, 0)
+            elif game.player.type == HEART_TYPE:
+                print("activate her")     
 
             elif game.player.dino_rect.colliderect(obstacle.rect):
                 game.player.dead()
